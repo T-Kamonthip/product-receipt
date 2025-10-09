@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "leelawad";
+  src: url("@/assets/leelawad/leelawad.ttf") format("truetype"),
+    url("@/assets/leelawad/leelawad.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.fontsize {
+  &-h1 {
+    font-size: $font-header; //32px
+  }
+
+  &-h2 {
+    font-size: $font-title; //28px
+  }
+  &-h3 {
+    font-size: $font-xxl; //25px
+  }
+
+  &-h4 {
+    font-size: $font-xl; //22px
+  }
+
+  &-h5 {
+    font-size: $font-l; //20px
+  }
+
+  &-h6 {
+    font-size: $font-normal; //18px
+  }
+
+  &-m {
+    font-size: $font-m; //14px
+  }
+
+  &-sm {
+    font-size: $font-sm; //14px
+  }
+
+  &-xs {
+    font-size: $font-xs; //12px
+  }
+}
+
+.font-weight {
+  &-normal {
+    font-weight: normal;
+  }
+  &-400 {
+    font-weight: 400 !important;
+  }
+  &-600 {
+    font-weight: 600 !important;
+  }
+  &-800 {
+    font-weight: 800 !important;
+  }
+}
+
+.font {
+  &-primary {
+    color: $primary;
+  }
+  &-success {
+    color: $success;
+  }
+  &-danger {
+    color: $danger;
+  }
+  &-info {
+    color: $info;
+  }
+}
+
+.font-header {
+  font-weight: 600;
+  font-size: $font-l;
+}
+
+.font-receipt {
+  font-weight: normal;
+  font-size: $font-xs;
+}
+
+.font-receipt-2 {
+  font-weight: normal;
+  font-size: $font-xs;
+}
+
+.left-sign {
+  font-family: "Consolas";
+  font-weight: 600;
+}

@@ -1,0 +1,283 @@
+@import "variable";
+@import "font";
+
+@import "primeflex/primeflex.scss";
+
+body {
+  background-color: rgb(225, 236, 248);
+  color: $primary;
+  font-family: "leelawad";
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.p-button {
+  background-color: $info !important;
+  color: white !important;
+  border: 1px solid $info !important;
+}
+
+.card-upload {
+  width: 100%;
+  border: 1px dashed $info;
+  background-color: white;
+  border-radius: 6px;
+  align-items: start;
+}
+
+.p-fileupload-basic {
+  display: inline-flex !important;
+  flex-wrap: wrap;
+  align-items: center !important;
+  justify-content: start !important;
+  gap: var(--p-fileupload-basic-gap);
+}
+
+.box-input {
+  height: 87vh;
+  align-items: start !important;
+  overflow: auto;
+}
+
+.box-paper {
+  height: 87vh;
+  align-items: start !important;
+  background-color: $secondary-light;
+  position: relative;
+  overflow: auto;
+}
+
+.a4-paper {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  width: 794px;
+  min-height: 1123px;
+  height: max-content;
+}
+
+.border-line {
+  &-bold {
+    margin-top: 5px;
+    padding: 0;
+    border-bottom: 2px solid black;
+    height: 0px;
+  }
+  &-normal {
+    padding: 0;
+    border-bottom: 1px solid black;
+    height: 0px;
+  }
+  &-double {
+    margin-top: 5px;
+    padding: 0;
+    // border-bottom: 1px double black !important;
+    border-style: double;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    height: 0px;
+  }
+}
+
+.box-radius {
+  border: 1px dashed $primary;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.p-inputtext {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-size: 1rem;
+  color: black !important;
+  background: white !important;
+  padding: var(--p-inputtext-padding-y) var(--p-inputtext-padding-x);
+  border: 1px solid var(--p-inputtext-border-color);
+  transition: background var(--p-inputtext-transition-duration),
+    color var(--p-inputtext-transition-duration),
+    border-color var(--p-inputtext-transition-duration),
+    outline-color var(--p-inputtext-transition-duration),
+    box-shadow var(--p-inputtext-transition-duration);
+  appearance: none;
+  border-radius: var(--p-inputtext-border-radius);
+  outline-color: transparent;
+  box-shadow: var(--p-inputtext-shadow);
+}
+
+.p-dialog {
+  max-height: 90%;
+  transform: scale(1);
+  border-radius: var(--p-dialog-border-radius);
+  box-shadow: var(--p-dialog-shadow);
+  background: white !important;
+  border: 1px solid var(--p-dialog-border-color);
+  color: black !important;
+}
+
+.p-radiobutton-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--p-radiobutton-border-color);
+  background: white !important;
+  width: var(--p-radiobutton-width);
+  height: var(--p-radiobutton-height);
+  transition: background var(--p-radiobutton-transition-duration),
+    color var(--p-radiobutton-transition-duration),
+    border-color var(--p-radiobutton-transition-duration),
+    box-shadow var(--p-radiobutton-transition-duration),
+    outline-color var(--p-radiobutton-transition-duration);
+  outline-color: transparent;
+  box-shadow: var(--p-radiobutton-shadow);
+}
+
+.p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {
+  background: #0da37e !important;
+  transform: translateZ(0) scale(1, 1);
+  visibility: visible;
+}
+
+.p-button-info {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: $info !important;
+  background: rgb(255, 255, 255) !important;
+  border: 1px solid $info !important;
+  padding: var(--p-button-padding-y) var(--p-button-padding-x);
+  font-size: 1rem;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  transition: background var(--p-button-transition-duration),
+    color var(--p-button-transition-duration),
+    border-color var(--p-button-transition-duration),
+    outline-color var(--p-button-transition-duration),
+    box-shadow var(--p-button-transition-duration);
+  border-radius: var(--p-button-border-radius);
+  outline-color: transparent;
+  gap: var(--p-button-gap);
+}
+
+.p-button-success {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: $success !important;
+  background: rgb(255, 255, 255) !important;
+  border: 1px solid $success !important;
+  padding: var(--p-button-padding-y) var(--p-button-padding-x);
+  font-size: 1rem;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  transition: background var(--p-button-transition-duration),
+    color var(--p-button-transition-duration),
+    border-color var(--p-button-transition-duration),
+    outline-color var(--p-button-transition-duration),
+    box-shadow var(--p-button-transition-duration);
+  border-radius: var(--p-button-border-radius);
+  outline-color: transparent;
+  gap: var(--p-button-gap);
+}
+
+.p-button-danger {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: $danger !important;
+  background: rgb(255, 255, 255) !important;
+  border: 1px solid $danger !important;
+  padding: var(--p-button-padding-y) var(--p-button-padding-x);
+  font-size: 1rem;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  transition: background var(--p-button-transition-duration),
+    color var(--p-button-transition-duration),
+    border-color var(--p-button-transition-duration),
+    outline-color var(--p-button-transition-duration),
+    box-shadow var(--p-button-transition-duration);
+  border-radius: var(--p-button-border-radius);
+  outline-color: transparent;
+  gap: var(--p-button-gap);
+}
+
+.p-select {
+  display: inline-flex;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  background: white !important;
+  border: 1px solid black !important;
+  transition: background var(--p-select-transition-duration),
+    color var(--p-select-transition-duration),
+    border-color var(--p-select-transition-duration),
+    outline-color var(--p-select-transition-duration),
+    box-shadow var(--p-select-transition-duration);
+  border-radius: var(--p-select-border-radius);
+  outline-color: transparent;
+  box-shadow: var(--p-select-shadow);
+
+  .p-select-label {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1 1 auto;
+    width: 1%;
+    padding: var(--p-select-padding-y) var(--p-select-padding-x);
+    text-overflow: ellipsis;
+    cursor: pointer;
+    color: black !important;
+    background: transparent;
+    border: 0 none;
+    outline: 0 none;
+  }
+}
+
+.p-select-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white !important;
+  color: black !important;
+  border: 1px solid var(--p-select-overlay-border-color);
+  border-radius: var(--p-select-overlay-border-radius);
+  box-shadow: var(--p-select-overlay-shadow);
+}
+
+.p-select-option {
+  background: white !important;
+  color: black !important;
+}
+
+.p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+  background: $info !important;
+  color: white !important;
+}
+
+.p-select-option.p-select-option-selected.p-focus {
+  background: $info !important;
+  color: white !important;
+}
+
+.p-inputtext:disabled {
+  opacity: 1;
+  background: $secondary-light !important;
+  color: black !important;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "product.receipt",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@primevue/themes": "^4.0.7",
+    "@vueuse/rxjs": "^13.9.0",
+    "dexie": "^4.2.1",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.10.2",
+    "jspdf": "^3.0.2",
+    "pinia": "^2.1.7",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.0.7",
+    "read-excel-file": "^5.8.5",
+    "rxjs": "^7.8.2",
+    "thai-baht-text": "^2.0.5",
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3",
+    "vue-select": "^4.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "sass": "^1.79.1",
+    "sass-loader": "^16.0.1",
+    "vite": "^5.3.1"
+  }
+}
