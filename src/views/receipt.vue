@@ -264,7 +264,7 @@
           </div>
           <div class="grid flex align-items-start font-receipt">
             <div class="col-6 px-0">
-              ({{ ThaiBahtText(toCommas(allTotal || 0), 2) }})
+              ({{ ThaiBahtText(toCommas(totalAll || 0), 2) }})
             </div>
             <div class="col-4 px-0 text-right">ยอดรวม</div>
             <div class="col-2 px-0 text-right">
