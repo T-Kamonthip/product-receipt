@@ -22,6 +22,7 @@ import InputGroupAddon from "primevue/inputgroupaddon";
 import RadioButton from 'primevue/radiobutton';
 import Select from 'primevue/select';
 import InputMask from 'primevue/inputmask';
+import MultiSelect from 'primevue/multiselect';
 
 const app = createApp(App);
 
@@ -48,6 +49,7 @@ app.component("InputGroupAddon", InputGroupAddon);
 app.component("RadioButton", RadioButton);
 app.component("Select", Select);
 app.component("InputMask", InputMask);
+app.component("MultiSelect", MultiSelect);
 
 app.use(ToastService);
 

@@ -205,13 +205,13 @@
             <div class="col-7 px-0 py-0">
               <span class="font-receipt"
                 ><span class="font-weight-600">ชั่งโดย:</span>
-                {{ headerReceipt?.person1 || "-" }}</span
+                {{ scaleList?.join(", ") || "-" }}</span
               >
             </div>
             <div class="col-5 px-0 text-right py-0">
               <span class="font-receipt"
                 ><span class="font-weight-600">สั่งจ่ายโดย:</span>
-                {{ headerReceipt?.person2 || "-" }}</span
+                {{ adList?.join(", ") || "-" }}</span
               >
             </div>
           </div>
@@ -466,18 +466,30 @@
       <div class="grid flex align-items-center mt-2">
         <div class="col-2 text-right">ชั่งโดย:</div>
         <div class="col-4">
-          <InputText
+          <!-- <InputText
             type="text"
             v-model="headerReceiptDialog.person1"
             class="w-full"
+          /> -->
+          <MultiSelect
+            v-model="scaleList"
+            :options="scalePer"
+            filter
+            class="w-full md:w-80"
           />
         </div>
         <div class="col-2 text-right">สั่งจ่ายโดย:</div>
         <div class="col-4">
-          <InputText
+          <!-- <InputText
             type="text"
             v-model="headerReceiptDialog.person2"
             class="w-full"
+          /> -->
+          <MultiSelect
+            v-model="adList"
+            :options="adPer"
+            filter
+            class="w-full md:w-80"
           />
         </div>
       </div>
@@ -555,6 +567,7 @@
     v-on:update:visible="clearDialog()"
   >
     <div>
+      <!-- {{ itemsList }} -->
       <div class="grid flex align-items-center mt-2">
         <div class="col-2 text-right">สินค้า:</div>
         <div class="col-4">
@@ -562,9 +575,11 @@
             v-model="itemDialog.itemShow"
             :options="itemsList"
             optionLabel="itemShow"
+            option-value="itemShow"
             class="w-full"
             filter
             :resetFilterOnHide="true"
+            disabled
           />
         </div>
       </div>
@@ -722,8 +737,6 @@ import { toCommas } from "@/utils/convert-utils";
 import { useStore } from "@/stores/index";
 import { storeToRefs } from "pinia";
 import ThaiBahtText from "thai-baht-text";
-import { liveQuery } from "dexie";
-import { useObservable } from "@vueuse/rxjs";
 import { db } from "@/stores/db.js";
 import { computed } from "vue";
 
@@ -736,6 +749,30 @@ const isPrinting = ref(false);
 
 const customerList = ref([]);
 const itemsList = ref([]);
+const scaleList = ref([]);
+const adList = ref([]);
+
+const scalePer = ref([
+  "Joy.scale",
+  "Nat.scale",
+  "Pai.scale",
+  "Rong.scale",
+  "Aui.scale",
+  "Saw.scale",
+]);
+const adPer = ref([
+  "Mint.admin",
+  "Fon.admin",
+  "Small.cashier",
+  "Kit.cashier",
+  "Nan.cashier",
+  "Tang.cashier",
+  "Noey.cashier",
+  "Nim.cashier",
+  "Bay.cashier",
+  "Ram.cashier",
+  "Nant.cashier",
+]);
 
 const headerReceipt = ref({
   order: null,
@@ -975,7 +1012,7 @@ const saveItem = () => {
   if (modeDialog.value === "add") {
     itemList.value.push({
       ...itemDialog.value,
-      name: itemDialog.value?.itemShow?.name,
+      name: itemDialog.value?.name,
       mass: parseFloat(itemDialog.value?.mass || 0),
       total: itemDialog.value?.total,
       sum: parseFloat(itemDialog.value?.sum || 0),
@@ -992,7 +1029,7 @@ const saveItem = () => {
   } else {
     itemList.value[editIndex.value] = {
       ...itemDialog.value,
-      name: itemDialog.value?.itemShow?.name,
+      name: itemDialog.value?.name,
       mass: parseFloat(itemDialog.value?.mass || 0),
       total: itemDialog.value?.total,
       sum: parseFloat(itemDialog.value?.sum || 0),
@@ -1034,6 +1071,9 @@ const clearAll = () => {
     before: null,
     after: null,
   };
+
+  adList.value = [];
+  scaleList.value = [];
 
   calAll();
 };
