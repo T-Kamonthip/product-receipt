@@ -268,7 +268,7 @@
             </div>
             <div class="col-4 px-0 text-right">ยอดรวม</div>
             <div class="col-2 px-0 text-right">
-              {{ toCommas(allTotal || 0, 2) }}
+              {{ toCommas(totalAll || 0, 2) }}
             </div>
           </div>
 
@@ -279,7 +279,7 @@
             <div>ลงชื่อ : _________________________(ผู้จ่าย)</div>
           </div>
 
-          <div class="grid flex align-items-center font-receipt-2 mt-3">
+          <div class="grid flex align-items-center font-receipt-2 mt-5">
             <div class="col-12 px-0">
               ข้าพเจ้า(ผู้ขาย)
               ขอรับรองว่าทรัพย์สินที่นำมาขายทั้งหมดนี้เป็นกรรมสิทธิ์ของข้าพเจ้าอย่างถูกต้องตามกฎหมาย
@@ -449,7 +449,7 @@
         <div class="col-2 text-right">วันที่เข้า:</div>
         <div class="col-4">
           <InputMask
-            mask="99/99/9999 99:99"
+            mask="99/99/9999"
             v-model="headerReceiptDialog.startDate"
             class="w-full"
           />
@@ -457,7 +457,7 @@
         <div class="col-2 text-right">วันที่รับเงิน:</div>
         <div class="col-4">
           <InputMask
-            mask="99/99/9999 99:99"
+            mask="99/99/9999"
             v-model="headerReceiptDialog.endDate"
             class="w-full"
           />
@@ -600,6 +600,7 @@
             type="text"
             v-model="itemDialog.price"
             class="w-full text-right"
+            disabled
           />
         </div>
       </div>
@@ -611,6 +612,7 @@
             type="text"
             v-model="itemDialog.sum"
             class="w-full text-right"
+            disabled
           />
         </div>
         <div class="col-2 text-right">หัก:</div>
@@ -619,6 +621,7 @@
             type="text"
             v-model="itemDialog.minus"
             class="w-full text-right"
+            @input="addSum()"
           />
         </div>
       </div>
@@ -739,6 +742,7 @@ import { storeToRefs } from "pinia";
 import ThaiBahtText from "thai-baht-text";
 import { db } from "@/stores/db.js";
 import { computed } from "vue";
+import { add } from "dexie";
 
 const pdfContent = ref(null);
 
@@ -761,17 +765,17 @@ const scalePer = ref([
   "Saw.scale",
 ]);
 const adPer = ref([
-  "Mint.admin",
-  "Fon.admin",
-  "Small.cashier",
-  "Kit.cashier",
-  "Nan.cashier",
-  "Tang.cashier",
-  "Noey.cashier",
-  "Nim.cashier",
-  "Bay.cashier",
-  "Ram.cashier",
-  "Nant.cashier",
+  "Mint",
+  "Fon",
+  "Small",
+  "Kit",
+  "Nan",
+  "Tang",
+  "Noey",
+  "Nim",
+  "Bay",
+  "Ram",
+  "Nant",
 ]);
 
 const headerReceipt = ref({
@@ -1119,6 +1123,7 @@ const calAlloy = () => {
 
   itemDialog.value.alloy.sum = sum;
 
+  addSum();
   // calMass();
 };
 
@@ -1144,15 +1149,15 @@ const printPDF = () => {
   }, "2000");
 };
 
-const calMass = () => {
-  itemDialog.value.mass = (
-    parseFloat(itemDialog.value?.sum || 0) -
-    (parseFloat(itemDialog.value?.minus || 0) +
-      parseFloat(itemDialog.value?.alloy?.sum || 0))
-  ).toFixed(2);
+// const calMass = () => {
+//   itemDialog.value.mass = (
+//     parseFloat(itemDialog.value?.sum || 0) -
+//     (parseFloat(itemDialog.value?.minus || 0) +
+//       parseFloat(itemDialog.value?.alloy?.sum || 0))
+//   ).toFixed(2);
 
-  calSum();
-};
+//   calSum();
+// };
 
 const calSum = () => {
   itemDialog.value.total = (
@@ -1218,6 +1223,14 @@ const searchHP = () => {
         }
       });
   }
+};
+
+const addSum = () => {
+  itemDialog.value.sum = (
+    parseFloat(itemDialog.value?.mass || 0) +
+    parseFloat(itemDialog.value?.minus || 0) +
+    parseFloat(itemDialog.value?.alloy?.sum || 0)
+  ).toFixed(2);
 };
 
 const sumAll = computed(() => {

@@ -192,6 +192,7 @@ const onUploadPurchase = (file) => {
             mass: row[8],
             price: row[10],
             total: row[12],
+            sum: row[8],
           });
         }
 
