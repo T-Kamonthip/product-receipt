@@ -1207,7 +1207,7 @@ const searchHP = () => {
               mass: parseFloat(det?.mass || 0),
               price: parseFloat(det?.price || 0),
               total: parseFloat(det?.total || 0),
-              sum: 0,
+              sum: parseFloat(det?.sum || 0),
               minus: 0,
               alloy: {
                 sum: 0,
