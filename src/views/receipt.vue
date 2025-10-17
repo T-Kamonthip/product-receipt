@@ -696,7 +696,7 @@
         type="button"
         class="p-button-danger"
         label="ยกเลิก"
-        @click="visibleItem = false"
+        @click="cancelItem()"
       ></Button>
       <Button
         type="button"
@@ -828,6 +828,7 @@ const customerDefault = ref({
 
 const itemList = ref([]);
 
+const itemDiaOpen = ref({});
 const itemDialog = ref({
   code: null,
   name: null,
@@ -915,11 +916,13 @@ const alloyList = ref([
 
 const alloyDialog = ref([]);
 
+const alloyDiaOpen = ref({});
 const alloyDetailDefault = ref({
   amount: null,
   alloy: null,
   other: null,
 });
+const alloySumOpen = ref(0);
 
 const HPCode = ref("");
 const visibleHeader = ref(false);
@@ -974,6 +977,10 @@ const openDialogItem = (mode = "add", item = null, index = null) => {
     itemDialog.value = { ...item };
     alloyDialog.value = item?.alloy?.detailList || [];
 
+    itemDiaOpen.value = { ...item };
+    alloyDiaOpen.value = item?.alloy?.detailList || [];
+    alloySumOpen.value = item?.alloy?.sum || 0;
+
     editIndex.value = index;
     modeDialog.value = "edit";
 
@@ -982,10 +989,27 @@ const openDialogItem = (mode = "add", item = null, index = null) => {
 };
 
 const clearDialog = () => {
+  console.log("clearDialog >>> ");
   itemDialog.value = { ...itemDefault.value };
+  alloyDialog.value = [];
   itemDialog.value.alloy.sum = 0;
 
+  editIndex.value = null;
+  modeDialog.value = "add";
+
+  visibleItem.value = false;
+};
+
+const cancelItem = () => {
+  console.log("cancelItem >>> ");
+  itemDialog.value = { ...itemDefault.value };
   alloyDialog.value = [];
+  itemDialog.value.alloy.sum = 0;
+
+  // alloyDialog.value = [];
+  itemList.value[editIndex.value] = { ...itemDiaOpen.value };
+  itemList.value[editIndex.value].alloy.detailList = [...alloyDiaOpen.value];
+  itemList.value[editIndex.value].alloy.sum = alloySumOpen.value;
 
   editIndex.value = null;
   modeDialog.value = "add";
@@ -1000,6 +1024,7 @@ const saveHeader = () => {
 };
 
 const saveItem = () => {
+  console.log("saveItem >>> ");
   const detail = [];
   alloyDialog.value.forEach((ad) => {
     if (ad?.alloy?.id === 0) {
