@@ -32,6 +32,36 @@
 
     <div class="card-upload mt-3 p-3">
       <span class="fontsize-h3 font-weight-600 font-info"
+        ><i class="pi pi-id-card mr-3" style="font-size: 1.5rem"></i
+        >ข้อมูลบัญชีธนาคาร</span
+      >
+      <div class="mt-3">
+        <FileUpload
+          ref="customerBankUpload"
+          mode="basic"
+          name="customerBankUpload[]"
+          url="/api/upload"
+          accept=".xls, .xlsx"
+          @select="onUploadBankCustomer($event)"
+        />
+        <i
+          v-if="isUploadCustomerBankDone"
+          class="pi pi-check ml-3"
+          style="font-size: 1.5rem; color: green"
+        ></i>
+        <ProgressSpinner
+          style="width: 50px; height: 50px"
+          strokeWidth="8"
+          fill="transparent"
+          animationDuration=".5s"
+          aria-label="Custom ProgressSpinner"
+          v-if="isUploadCustomerBank"
+        />
+      </div>
+    </div>
+
+    <div class="card-upload mt-3 p-3">
+      <span class="fontsize-h3 font-weight-600 font-info"
         ><i class="pi pi-shopping-cart mr-3" style="font-size: 1.5rem"></i
         >ข้อมูลสินค้า</span
       >
@@ -102,11 +132,13 @@ import { db } from "@/stores/db.js";
 const store = useStore();
 const { dataList } = storeToRefs(store);
 
-const customersList = ref([]);
+// const customersList = ref([]);
 const customerUpload = ref();
 
 const isUploadCustomer = ref(false);
 const isUploadCustomerDone = ref(false);
+const isUploadCustomerBank = ref(false);
+const isUploadCustomerBankDone = ref(false);
 const isUploadItem = ref(false);
 const isUploadItemDone = ref(false);
 const isUploadPurchase = ref(false);
@@ -211,6 +243,29 @@ const onUploadPurchase = (file) => {
 
       isUploadPurchase.value = false;
       isUploadPurchaseDone.value = true;
+    });
+  }
+};
+
+const onUploadBankCustomer = (file) => {
+  // console.log("file > ", file.files[0]);
+  if (file.files[0]) {
+    isUploadCustomerBank.value = true;
+    isUploadCustomerBankDone.value = false;
+
+    readXlsxFile(file.files[0]).then(async (rows) => {
+      for (const row of rows) {
+        await db.bank.add({
+          cusCode: row[0],
+          bankName: row[1],
+          branch: row[2],
+          accountNumber: row[3],
+          bankOwner: row[4],
+        });
+      }
+
+      isUploadCustomerBank.value = false;
+      isUploadCustomerBankDone.value = true;
     });
   }
 };

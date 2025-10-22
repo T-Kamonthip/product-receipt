@@ -539,7 +539,14 @@
     <div class="grid flex align-items-center mt-2">
       <div class="col-2 text-right">รถ:</div>
       <div class="col-10">
-        <InputText type="text" v-model="customerDialog.car" class="w-full" />
+        <!-- <InputText type="text" v-model="customerDialog.car" class="w-full" /> -->
+        <Select
+          v-model="customerDialog.car"
+          :options="carOptions"
+          class="w-full"
+          filter
+          :resetFilterOnHide="true"
+        />
       </div>
     </div>
     <div class="flex justify-content-center gap-2 mt-3">
@@ -948,6 +955,7 @@ const allSum = ref();
 const allTotal = ref();
 const allMinus = ref();
 const allAlloy = ref();
+const carOptions = ref([]);
 
 onMounted(async () => {
   customerList.value = [...dataList.value?.customers] || [];
@@ -1115,7 +1123,9 @@ const searchNameCustomer = () => {
   customerDialog.value.name = cus?.customer;
   customerDialog.value.address = cus?.address;
   customerDialog.value.tel = cus?.tel;
-  customerDialog.value.car = cus?.car;
+
+  carOptions.value = cus?.car?.split(",") || [];
+  // customerDialog.value.car = cus?.car;
   // console.log("cus >> ", cus);
 };
 
