@@ -539,14 +539,14 @@
     <div class="grid flex align-items-center mt-2">
       <div class="col-2 text-right">รถ:</div>
       <div class="col-10">
-        <!-- <InputText type="text" v-model="customerDialog.car" class="w-full" /> -->
-        <Select
+        <InputText type="text" v-model="customerDialog.car" class="w-full" />
+        <!-- <Select
           v-model="customerDialog.car"
           :options="carOptions"
           class="w-full"
           filter
           :resetFilterOnHide="true"
-        />
+        /> -->
       </div>
     </div>
     <div class="flex justify-content-center gap-2 mt-3">
@@ -919,6 +919,14 @@ const alloyList = ref([
     id: 11,
     name: "สี",
   },
+  {
+    id: 12,
+    name: "สติ๊กเกอร์",
+  },
+  {
+    id: 13,
+    name: "น้ำมัน",
+  },
 ]);
 
 const alloyDialog = ref([]);
@@ -1124,8 +1132,8 @@ const searchNameCustomer = () => {
   customerDialog.value.address = cus?.address;
   customerDialog.value.tel = cus?.tel;
 
-  carOptions.value = cus?.car?.split(",") || [];
-  // customerDialog.value.car = cus?.car;
+  // carOptions.value = cus?.car?.split(",") || [];
+  customerDialog.value.car = cus?.car;
   // console.log("cus >> ", cus);
 };
 
