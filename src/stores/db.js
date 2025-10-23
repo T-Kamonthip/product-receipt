@@ -1,8 +1,9 @@
 // db.js
-import Dexie from 'dexie';
+import Dexie from "dexie";
 
-export const db = new Dexie('myDatabase');
+export const db = new Dexie("myDatabase");
 db.version(1).stores({
-  purchase: '++id, code, detail', // Primary key and indexed props
-  bank: '++id, cusCode, bankName, branch, accountNumber, bankOwner',
+  purchase: "++id, code, detail", // Primary key and indexed props
+  bank: "++id, cusCode, bankName, branch, accountNumber, bankOwner",
+  car: "++id, cusCode, carDetail",
 });

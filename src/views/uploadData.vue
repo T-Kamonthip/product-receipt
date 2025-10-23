@@ -32,7 +32,37 @@
 
     <div class="card-upload mt-3 p-3">
       <span class="fontsize-h3 font-weight-600 font-info"
-        ><i class="pi pi-id-card mr-3" style="font-size: 1.5rem"></i
+        ><i class="pi pi-car mr-3" style="font-size: 1.5rem"></i
+        >ข้อมูลทะเบียนรถ</span
+      >
+      <div class="mt-3">
+        <FileUpload
+          ref="customerBankUpload"
+          mode="basic"
+          name="customerBankUpload[]"
+          url="/api/upload"
+          accept=".xls, .xlsx"
+          @select="onUploadCarCustomer($event)"
+        />
+        <i
+          v-if="isUploadCustomerCarDone"
+          class="pi pi-check ml-3"
+          style="font-size: 1.5rem; color: green"
+        ></i>
+        <ProgressSpinner
+          style="width: 50px; height: 50px"
+          strokeWidth="8"
+          fill="transparent"
+          animationDuration=".5s"
+          aria-label="Custom ProgressSpinner"
+          v-if="isUploadCustomerCar"
+        />
+      </div>
+    </div>
+
+    <div class="card-upload mt-3 p-3">
+      <span class="fontsize-h3 font-weight-600 font-info"
+        ><i class="pi pi-building-columns mr-3" style="font-size: 1.5rem"></i
         >ข้อมูลบัญชีธนาคาร</span
       >
       <div class="mt-3">
@@ -139,6 +169,8 @@ const isUploadCustomer = ref(false);
 const isUploadCustomerDone = ref(false);
 const isUploadCustomerBank = ref(false);
 const isUploadCustomerBankDone = ref(false);
+const isUploadCustomerCar = ref(false);
+const isUploadCustomerCarDone = ref(false);
 const isUploadItem = ref(false);
 const isUploadItemDone = ref(false);
 const isUploadPurchase = ref(false);
@@ -260,6 +292,7 @@ const onUploadBankCustomer = (file) => {
 
     readXlsxFile(file.files[0]).then(async (rows) => {
       const seen = new Set();
+
       for (const row of rows) {
         const rawAccount = row[15];
         if (!rawAccount) continue;
@@ -291,6 +324,44 @@ const onUploadBankCustomer = (file) => {
 
       isUploadCustomerBank.value = false;
       isUploadCustomerBankDone.value = true;
+    });
+  }
+};
+
+const onUploadCarCustomer = (file) => {
+  // console.log("file > ", file.files[0]);
+  if (file.files[0]) {
+    isUploadCustomerCar.value = true;
+    isUploadCustomerCarDone.value = false;
+
+    readXlsxFile(file.files[0]).then(async (rows) => {
+      const seen = new Set();
+
+      for (const row of rows) {
+        const rawCar = row[3];
+        if (!rawCar) continue;
+
+        const car = String(rawCar).trim();
+        if (!car) continue;
+        if (seen.has(car)) continue;
+        seen.add(car);
+
+        // check if accountNumber already exists in DB
+        const exists = await db.car.where("carDetail").equals(car).first();
+
+        if (exists) {
+          // skip adding duplicate
+          continue;
+        }
+
+        await db.car.add({
+          cusCode: "" + getBetweenBrackets(row[2]) || "",
+          carDetail: car,
+        });
+      }
+
+      isUploadCustomerCar.value = false;
+      isUploadCustomerCarDone.value = true;
     });
   }
 };

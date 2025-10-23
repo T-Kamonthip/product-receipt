@@ -1221,8 +1221,22 @@ const searchNameCustomer = () => {
   customerDialog.value.address = cus?.address;
   customerDialog.value.tel = cus?.tel;
 
-  carOptions.value = cus?.car?.split(",") || [];
+  // carOptions.value = cus?.car?.split(",") || [];
 
+  if (cus?.code) {
+    db.car
+      .where("cusCode")
+      .equals(cus?.code)
+      .toArray()
+      .then((cars) => {
+        if (cars) {
+          // console.log("cars >>> ", cars);
+          carOptions.value = cars.map((m) => m?.carDetail);
+        }
+      });
+  } else {
+    carOptions.value = [];
+  }
   // customerDialog.value.car = cus?.car;
   // console.log("cus >> ", cus);
 };
