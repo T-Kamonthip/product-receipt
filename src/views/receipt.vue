@@ -386,13 +386,48 @@
         </div>
 
         <div v-if="isShowBank" class="box-radius p-2 mt-2">
-          <div class="font-receipt">
+          <div class="flex flex-wrap gap-4">
+            <div class="flex items-center">
+              <RadioButton
+                v-model="bankType"
+                inputId="bankType1"
+                name="bankType"
+                value="1"
+              />
+              <label for="bankType1" class="ml-2">เลือกจากระบบ</label>
+            </div>
+            <div class="flex items-center">
+              <RadioButton
+                v-model="bankType"
+                inputId="bankType2"
+                name="bankType"
+                value="2"
+              />
+              <label for="bankType2" class="ml-2">กรอกเอง</label>
+            </div>
+          </div>
+
+          <div v-if="bankType == '1'">
+            <Select
+              v-model="paymentDetail.number"
+              :options="bankOptions"
+              option-label="label"
+              option-value="accountNumber"
+              class="w-full mt-3"
+              filter
+              :resetFilterOnHide="true"
+              @change="mapBankAccount()"
+            >
+            </Select>
+          </div>
+          <div class="font-receipt mt-3">
             ธนาคาร:
             <div>
               <InputText
                 class="w-full"
                 type="text"
                 v-model="paymentDetail.bank"
+                :disabled="bankType == '1'"
               />
             </div>
           </div>
@@ -403,6 +438,7 @@
                 class="w-full"
                 type="text"
                 v-model="paymentDetail.branch"
+                :disabled="bankType == '1'"
               />
             </div>
           </div>
@@ -413,6 +449,7 @@
                 class="w-full"
                 type="text"
                 v-model="paymentDetail.number"
+                :disabled="bankType == '1'"
               />
             </div>
           </div>
@@ -423,6 +460,7 @@
                 class="w-full"
                 type="text"
                 v-model="paymentDetail.name"
+                :disabled="bankType == '1'"
               />
             </div>
           </div>
@@ -539,16 +577,42 @@
     <div class="grid flex align-items-center mt-2">
       <div class="col-2 text-right">รถ:</div>
       <div class="col-10">
+        <div class="flex flex-wrap gap-4">
+          <div class="flex items-center">
+            <RadioButton
+              v-model="carType"
+              inputId="carType1"
+              name="carType"
+              value="1"
+            />
+            <label for="carType1" class="ml-2">เลือกจากระบบ</label>
+          </div>
+          <div class="flex items-center">
+            <RadioButton
+              v-model="carType"
+              inputId="carType2"
+              name="carType"
+              value="2"
+            />
+            <label for="carType2" class="ml-2">กรอกเอง</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-2"></div>
+      <div v-if="carType == 2" class="col-10">
         <InputText type="text" v-model="customerDialog.car" class="w-full" />
-        <!-- <Select
+      </div>
+      <div v-else class="col-10">
+        <Select
           v-model="customerDialog.car"
           :options="carOptions"
           class="w-full"
           filter
           :resetFilterOnHide="true"
-        /> -->
+        />
       </div>
     </div>
+
     <div class="flex justify-content-center gap-2 mt-3">
       <Button
         type="button"
@@ -927,6 +991,10 @@ const alloyList = ref([
     id: 13,
     name: "น้ำมัน",
   },
+  {
+    id: 14,
+    name: "กระดาษ",
+  },
 ]);
 
 const alloyDialog = ref([]);
@@ -955,9 +1023,11 @@ const car = ref({
   before: null,
   after: null,
 });
+const carType = ref("1");
+const bankType = ref("1");
 const editIndex = ref();
 const modeDialog = ref("add");
-
+const bankOptions = ref([]);
 const allMass = ref();
 const allSum = ref();
 const allTotal = ref();
@@ -1037,6 +1107,24 @@ const saveHeader = () => {
   headerReceipt.value = { ...headerReceiptDialog.value };
   customer.value = { ...customerDialog.value };
   visibleHeader.value = false;
+  // Search for Bank
+  if (customer.value?.code) {
+    db.bank
+      .where("cusCode")
+      .equals(customer.value?.code)
+      .toArray()
+      .then((b) => {
+        if (b) {
+          // console.log("bank >>> ", b);
+          bankOptions.value = b.map((m) => {
+            return {
+              ...m,
+              label: `${m.accountNumber} (${m.bankOwner})`,
+            };
+          });
+        }
+      });
+  }
 };
 
 const saveItem = () => {
@@ -1125,15 +1213,17 @@ const clearAll = () => {
 
 const searchNameCustomer = () => {
   const cus =
-    customerList.value.filter((f) => f.code == customerDialog.value?.code)[0] ||
-    {};
+    customerList.value.filter(
+      (f) => f.code === customerDialog.value?.code
+    )[0] || {};
 
   customerDialog.value.name = cus?.customer;
   customerDialog.value.address = cus?.address;
   customerDialog.value.tel = cus?.tel;
 
-  // carOptions.value = cus?.car?.split(",") || [];
-  customerDialog.value.car = cus?.car;
+  carOptions.value = cus?.car?.split(",") || [];
+
+  // customerDialog.value.car = cus?.car;
   // console.log("cus >> ", cus);
 };
 
@@ -1240,7 +1330,7 @@ const searchHP = () => {
       .first()
       .then((purchase) => {
         if (purchase) {
-          console.log("purchase >>> ", purchase);
+          // console.log("purchase >>> ", purchase);
           itemList.value = [];
           purchase?.detail.forEach((det) => {
             itemList.value.push({
@@ -1265,6 +1355,20 @@ const searchHP = () => {
           alert("ไม่พบข้อมูลรหัส HP นี้");
         }
       });
+  }
+};
+
+const mapBankAccount = () => {
+  const bank = bankOptions.value.filter(
+    (f) => f.accountNumber === paymentDetail.value?.number
+  )[0];
+
+  console.log("bank >>> ", bank);
+
+  if (bank) {
+    paymentDetail.value.bank = bank?.bankName;
+    paymentDetail.value.branch = bank?.branch;
+    paymentDetail.value.name = bank?.bankOwner;
   }
 };
 

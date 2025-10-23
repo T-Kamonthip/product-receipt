@@ -159,7 +159,7 @@ const onUploadCustomer = (file) => {
       let customers = [];
       rows.forEach((row) => {
         customers.push({
-          code: row[0],
+          code: "" + row[0],
           customer: row[1],
           address: row[2],
           tel: row[3],
@@ -247,6 +247,11 @@ const onUploadPurchase = (file) => {
   }
 };
 
+const getBetweenBrackets = (str) => {
+  const m = str.match(/\[([^\]]+)\]/);
+  return m ? m[1] : "";
+};
+
 const onUploadBankCustomer = (file) => {
   // console.log("file > ", file.files[0]);
   if (file.files[0]) {
@@ -254,13 +259,33 @@ const onUploadBankCustomer = (file) => {
     isUploadCustomerBankDone.value = false;
 
     readXlsxFile(file.files[0]).then(async (rows) => {
+      const seen = new Set();
       for (const row of rows) {
+        const rawAccount = row[15];
+        if (!rawAccount) continue;
+
+        const accountNumber = String(rawAccount).trim();
+        if (!accountNumber) continue;
+        if (seen.has(accountNumber)) continue;
+        seen.add(accountNumber);
+
+        // check if accountNumber already exists in DB
+        const exists = await db.bank
+          .where("accountNumber")
+          .equals(accountNumber)
+          .first();
+
+        if (exists) {
+          // skip adding duplicate
+          continue;
+        }
+
         await db.bank.add({
-          cusCode: row[0],
-          bankName: row[1],
-          branch: row[2],
-          accountNumber: row[3],
-          bankOwner: row[4],
+          cusCode: "" + getBetweenBrackets(row[2]) || "",
+          bankName: row[14],
+          branch: row[16],
+          accountNumber: row[15],
+          bankOwner: row[13],
         });
       }
 
