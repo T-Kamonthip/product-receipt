@@ -192,10 +192,10 @@ const onUploadCustomer = (file) => {
       rows.forEach((row) => {
         customers.push({
           code: "" + row[0],
-          customer: row[1],
-          address: row[2],
-          tel: row[3],
-          car: row[4],
+          customer: row[1] + " " + (row[2] || ""),
+          address: row[3],
+          tel: row[4],
+          car: row[5],
         });
       });
 
