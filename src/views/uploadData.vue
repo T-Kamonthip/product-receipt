@@ -294,7 +294,7 @@ const onUploadBankCustomer = (file) => {
       const seen = new Set();
 
       for (const row of rows) {
-        const rawAccount = row[15];
+        const rawAccount = row[14];
         if (!rawAccount) continue;
 
         const accountNumber = String(rawAccount).trim();
@@ -310,15 +310,19 @@ const onUploadBankCustomer = (file) => {
 
         if (exists) {
           // skip adding duplicate
+          console.log(
+            "Duplicate account number found, skipping:",
+            accountNumber
+          );
           continue;
         }
 
         await db.bank.add({
           cusCode: "" + getBetweenBrackets(row[2]) || "",
-          bankName: row[14],
-          branch: row[16],
-          accountNumber: row[15],
-          bankOwner: row[13],
+          bankName: row[13],
+          branch: row[15],
+          accountNumber: row[14],
+          bankOwner: row[12],
         });
       }
 

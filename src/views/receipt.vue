@@ -148,7 +148,7 @@
             <div class="col-12 px-0 py-0 border-line-normal"></div>
           </div>
 
-          <div class="grid font-receipt mt-1">
+          <div class="grid font-receipt mt-1 item-break">
             <div class="col-1 px-0 py-1"></div>
             <div class="col-5 px-0 py-1">น้ำหนักสินค้าสุทธิ</div>
             <div class="col-1 px-0 py-1 text-right">
@@ -156,7 +156,7 @@
               {{ toCommas(massAll || 0, 2) }}
             </div>
           </div>
-          <div class="grid font-receipt">
+          <div class="grid font-receipt item-break">
             <div class="col-1 px-0 py-1"></div>
             <div class="col-2 px-0 py-1">
               <!-- รวม: {{ toCommas(allSum || 0, 2) }} -->
@@ -176,7 +176,7 @@
             <div class="col-11 px-0 py-1 border-line-normal"></div>
           </div>
 
-          <div class="grid font-receipt mt-1">
+          <div class="grid font-receipt mt-1 item-break">
             <div class="col-1 px-0 py-1"></div>
             <div class="col-5 px-0 py-1">น้ำหนักรถขนส่ง</div>
             <div class="col-1 px-0 py-1 text-right">
@@ -188,7 +188,7 @@
               }}
             </div>
           </div>
-          <div class="grid font-receipt">
+          <div class="grid font-receipt item-break">
             <div class="col-1 px-0 py-1"></div>
             <div class="col-2 px-0 py-1">
               รวม: {{ toCommas(parseFloat(car?.before || 0), 2) }}
@@ -201,7 +201,7 @@
             <div class="col-12 px-0 py-1 border-line-normal"></div>
           </div>
 
-          <div class="grid mt-1">
+          <div class="grid mt-1 item-break">
             <div class="col-7 px-0 py-0">
               <span class="font-receipt"
                 ><span class="font-weight-600">ชั่งโดย:</span>
@@ -220,7 +220,9 @@
             <div class="col-12 px-0 py-2 border-line-normal"></div>
           </div>
 
-          <div class="grid flex align-items-center font-receipt mt-2">
+          <div
+            class="grid flex align-items-center font-receipt mt-2 item-break"
+          >
             <div class="col-6 px-0 py-1">
               <span class="font-weight-600">ประเภทการชำระเงิน:</span>
               {{ paymentType === "1" ? "เงินสด" : "โอนเงิน" }}
@@ -249,7 +251,9 @@
             <div class="col-12 px-0 py-1 border-line-double"></div>
           </div>
 
-          <div class="grid flex align-items-center font-receipt mt-1">
+          <div
+            class="grid flex align-items-center font-receipt mt-1 item-break"
+          >
             <div class="col-6 px-0"></div>
             <div class="col-4 px-0 text-right">ยอดรวมก่อนเสียภาษี</div>
             <div class="col-2 px-0 text-right">
@@ -257,12 +261,12 @@
               {{ toCommas(totalAll || 0, 2) }}
             </div>
           </div>
-          <div class="grid flex align-items-center font-receipt">
+          <div class="grid flex align-items-center font-receipt item-break">
             <div class="col-6"></div>
             <div class="col-4 px-0 text-right">ภาษีมูลค่าเพิ่ม (VAT 7%)</div>
             <div class="col-2 px-0 text-right">0.00</div>
           </div>
-          <div class="grid flex align-items-start font-receipt">
+          <div class="grid flex align-items-start font-receipt item-break">
             <div class="col-6 px-0">
               ({{ ThaiBahtText(toCommas(totalAll || 0), 2) }})
             </div>
@@ -273,7 +277,7 @@
           </div>
 
           <div
-            class="grid flex align-items-center justify-content-between font-receipt mt-3"
+            class="grid flex align-items-center justify-content-between item-break font-receipt mt-3"
           >
             <div>ลงชื่อ : _________________________(ผู้รับเงิน/ผู้ส่งของ)</div>
             <div>ลงชื่อ : _________________________(ผู้จ่าย)</div>
